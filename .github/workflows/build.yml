@@ -1,0 +1,30 @@
+# Compile le plugin sur les serveurs de GitHub : aucun outil ni connexion
+# n'est nécessaire sur le PC. Le résultat est téléchargeable dans l'onglet
+# "Actions" du dépôt (section "Artifacts").
+name: Build AlphaDrum
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure
+        # Runtime C++ statique : le plugin fonctionne sans rien installer d'autre sur le PC.
+        run: cmake -S . -B build -A x64 "-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded$<$<CONFIG:Debug>:Debug>"
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: AlphaDrum-Windows
+          if-no-files-found: error
+          path: |
+            build/Plugin/AlphaDrum_artefacts/Release/VST3/
+            build/Plugin/AlphaDrum_artefacts/Release/Standalone/
