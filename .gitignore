@@ -1,0 +1,16 @@
+build/
+Build/
+cmake-build-*/
+out/
+.vs/
+.vscode/
+.idea/
+CMakeUserPresets.json
+CMakeCache.txt
+CMakeFiles/
+*.user
+.DS_Store
+Thumbs.db
+
+# Copie locale de JUCE (compilation hors ligne)
+/JUCE/
